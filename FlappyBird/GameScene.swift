@@ -14,7 +14,7 @@ class GameScene: SKScene {
     var pipeUpTexture = SKTexture()
     var pipeDownTexture = SKTexture()
     var PipeMoveAndRemove = SKAction()
-    let pipeGap = 150.0
+    let pipeGap = 110.0
     
     
     override func didMoveToView(view: SKView) {
@@ -30,22 +30,33 @@ class GameScene: SKScene {
         
         
         // ground image
-        let groundTexture = SKTexture(imageNamed: "background")
+        let groundTexture = SKTexture(imageNamed: "ground")
         groundTexture.filteringMode = SKTextureFilteringMode.Nearest
         
-        var groundImage = SKSpriteNode()
-        groundImage = SKSpriteNode(texture: groundTexture)
-        groundImage.setScale(0.8)
-        groundImage.position = CGPoint(x: self.size.width / 2, y: groundImage.size.height / 2)
+        let groundImage = SKSpriteNode(texture: groundTexture)
+        groundImage.setScale(2)
+        groundImage.position = CGPointMake(groundImage.size.width / 1.2, groundImage.size.height / 2)
         self.addChild(groundImage)
         
         
         // ground physical body
         let groundBody = SKNode()
         groundBody.position = CGPointMake(0, 0)
-        groundBody.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, self.frame.size.height * 0.44))
+        groundBody.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, groundImage.size.height * 2))
         groundBody.physicsBody?.dynamic = false
         self.addChild(groundBody)
+        
+        
+        
+        // background image
+        let backgroundTexture = SKTexture(imageNamed: "background")
+        backgroundTexture.filteringMode = SKTextureFilteringMode.Nearest
+        
+        let backgroundImage = SKSpriteNode(texture: backgroundTexture)
+        backgroundImage.setScale(1)
+        backgroundImage.position = CGPointMake(self.frame.size.width, groundImage.size.height / 2 + backgroundImage.size.height / 1.5 - 50)
+        backgroundImage.zPosition = -10
+        self.addChild(backgroundImage)
         
         // bird
         let birdTexture = SKTexture(imageNamed: "dogeicon")
@@ -64,8 +75,8 @@ class GameScene: SKScene {
         
         
         // pipe
-        pipeUpTexture = SKTexture(imageNamed: "pipeUp")
-        pipeDownTexture = SKTexture(imageNamed: "pipeDown")
+        pipeUpTexture = SKTexture(imageNamed: "PipeUp")
+        pipeDownTexture = SKTexture(imageNamed: "PipeDown")
         
         
         
@@ -96,14 +107,14 @@ class GameScene: SKScene {
         
         let pipePair = SKNode()
         pipePair.position = CGPointMake(self.frame.size.width + pipeUpTexture.size().width, 0)
-        //pipePair.zPosition = -10
+        pipePair.zPosition = -5
         
         let height = UInt32(self.frame.size.height / 4)
         //let y = arc4random() % height + height
         
         let pipeDown = SKSpriteNode(texture: pipeDownTexture)
         pipeDown.setScale(1)
-        pipeDown.position = CGPointMake(0.0, pipeDown.size.height + CGFloat(pipeGap))
+        pipeDown.position = CGPointMake(0.0, self.frame.size.height / 1.1)
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
         pipeDown.physicsBody?.dynamic = false
@@ -111,7 +122,7 @@ class GameScene: SKScene {
         
         let pipeUp = SKSpriteNode(texture: pipeUpTexture)
         pipeUp.setScale(1)
-        pipeUp.position = CGPointMake(0.0, self.frame.size.height)
+        pipeUp.position = CGPointMake(0.0, CGFloat(pipeGap) + pipeUp.size.height)
         
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
         pipeUp.physicsBody?.dynamic = false
