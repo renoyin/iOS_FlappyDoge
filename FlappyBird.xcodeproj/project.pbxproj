@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		540D442A1CD2ABFA0092980F /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 540D44291CD2ABFA0092980F /* background.png */; };
+		541D3F931CD4A82100EA3CBD /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 541D3F921CD4A82100EA3CBD /* play.png */; };
 		54CC16F21CD2BFDF00A10A30 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CC16EF1CD2BFDF00A10A30 /* ground.png */; };
 		54CC16F31CD2BFDF00A10A30 /* PipeDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CC16F01CD2BFDF00A10A30 /* PipeDown.png */; };
 		54CC16F41CD2BFDF00A10A30 /* PipeUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 54CC16F11CD2BFDF00A10A30 /* PipeUp.png */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		540D44291CD2ABFA0092980F /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		541D3F921CD4A82100EA3CBD /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		54CC16EF1CD2BFDF00A10A30 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
 		54CC16F01CD2BFDF00A10A30 /* PipeDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PipeDown.png; sourceTree = "<group>"; };
 		54CC16F11CD2BFDF00A10A30 /* PipeUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PipeUp.png; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				54CC16F11CD2BFDF00A10A30 /* PipeUp.png */,
 				54CC16F51CD415E800A10A30 /* pause.png */,
 				54CC16F71CD41BE400A10A30 /* doge_original.png */,
+				541D3F921CD4A82100EA3CBD /* play.png */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				54CC16F61CD415E800A10A30 /* pause.png in Resources */,
 				54CC16F21CD2BFDF00A10A30 /* ground.png in Resources */,
 				54CC16F81CD41BE400A10A30 /* doge_original.png in Resources */,
+				541D3F931CD4A82100EA3CBD /* play.png in Resources */,
 				54E5B1FB1CCF5D3700D5DB56 /* LaunchScreen.storyboard in Resources */,
 				54E5B2201CCF635C00D5DB56 /* dogeicon.png in Resources */,
 				54CC16F31CD2BFDF00A10A30 /* PipeDown.png in Resources */,

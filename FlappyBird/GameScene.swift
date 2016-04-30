@@ -8,6 +8,7 @@
 
 import SpriteKit
 
+
 class GameScene: SKScene {
     
     var bird = SKSpriteNode()
@@ -150,6 +151,10 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             let node = nodeAtPoint(location)
             
+            if node.name == "resume" {
+                
+            }
+            
             if node.name == "pause" {
                 // pause game and and blur filter
                 self.paused = true
@@ -163,22 +168,31 @@ class GameScene: SKScene {
                 // add doge to pause view
                 let doge = UIImage(named: "doge_original")
                 let pauseDoge = UIImageView(image: doge)
-                let x = self.view!.bounds.width / 2 - doge!.size.width / 4
-                let y = self.view!.bounds.height / 2 - doge!.size.height / 4
-                pauseDoge.frame = CGRectMake(x, y - self.view!.bounds.height / 10, doge!.size.width / 2, doge!.size.height / 2)
+                let x1 = self.view!.bounds.width / 2 - doge!.size.width / 4
+                let y1 = self.view!.bounds.height / 2 - doge!.size.height / 4
+                pauseDoge.frame = CGRectMake(x1, y1 - self.view!.bounds.height / 10, doge!.size.width / 2, doge!.size.height / 2)
                 pauseDoge.contentMode = UIViewContentMode.ScaleAspectFit
                 
                 
+                // add resume button
+                let resume = UIImage(named: "play")
+                let resumeButton = UIImageView(image: resume)
+                let x2 = self.view!.bounds.width / 2 - resume!.size.width / 4
+                let y2 = self.view!.bounds.height / 2 - resume!.size.height / 4
+                resumeButton.frame = CGRectMake(x2, y2 + self.view!.bounds.height / 10 , resume!.size.width / 2, resume!.size.height / 2)
+                resumeButton.contentMode = UIViewContentMode.ScaleAspectFit
+                
+                
+                
+                // animation
+                pauseDoge.alpha = CGFloat(0.0)
+                resumeButton.alpha = CGFloat(0.0)
                 self.view?.addSubview(pauseDoge)
-                //pauseView.f
-                /*
-                let pauseView = SKView(frame: (self.scene?.view?.bounds)!)
-                self.scene?.view?.addSubview(pauseView)
-                let pauseScene = SKScene(size: blurEffectView.frame.size)
-                pauseScene.addChild(doge)
-                pauseView.presentScene(pauseScene)
- */
-                //self.scene?.view?.willRemoveSubview(blurEffectView)
+                self.view?.addSubview(resumeButton)
+                UIView.animateWithDuration(0.7, delay: 0.2, options: UIViewAnimationOptions.CurveLinear, animations: {
+                    pauseDoge.alpha = CGFloat(0.9)
+                    resumeButton.alpha = CGFloat(0.9)
+                    }, completion: nil)
                 
             }
             
