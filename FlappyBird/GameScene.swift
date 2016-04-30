@@ -11,26 +11,33 @@ import SpriteKit
 class GameScene: SKScene {
     
     var bird = SKSpriteNode()
+    var groundTexture = SKTexture()
     var pipeUpTexture = SKTexture()
     var pipeDownTexture = SKTexture()
     var PipeMoveAndRemove = SKAction()
-    let pipeGap = 110.0
+    let pipeGap:CGFloat = 130.0
+    var pauseButton = SKSpriteNode()
     
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        //print(String(self.frame.size.width))
-        //print(String(self.frame.size.height))
-        //print(String(self.size.width))
-        //print(String(self.size.height))
         
         // Physics
-        self.physicsWorld.gravity = CGVectorMake(0.0, -4.0)
+        self.physicsWorld.gravity = CGVectorMake(0.0, -4.5)
+        
+        // pause button
+        let pauseButtonTexture = SKTexture(imageNamed: "pause")
+        pauseButton = SKSpriteNode(texture: pauseButtonTexture)
+        pauseButton.setScale(0.5)
+        pauseButton.position = CGPointMake(self.frame.size.width / 1.5, self.frame.size.height / 1.1)
+        pauseButton.zPosition = 5
+        pauseButton.name = "pause"
+        self.addChild(pauseButton)
         
         
         // ground image
-        let groundTexture = SKTexture(imageNamed: "ground")
+        groundTexture = SKTexture(imageNamed: "ground")
         groundTexture.filteringMode = SKTextureFilteringMode.Nearest
         
         let groundImage = SKSpriteNode(texture: groundTexture)
@@ -82,7 +89,7 @@ class GameScene: SKScene {
         
         
         let distanceToMove = CGFloat(self.frame.size.width + 2 * pipeDownTexture.size().width)
-        let movePipes = SKAction.moveByX(-distanceToMove, y: 0.0, duration: NSTimeInterval(3))
+        let movePipes = SKAction.moveByX(-distanceToMove, y: 0.0, duration: NSTimeInterval(3.0))
         let removePipes = SKAction.removeFromParent()
         PipeMoveAndRemove = SKAction.sequence([movePipes, removePipes])
         
@@ -93,7 +100,7 @@ class GameScene: SKScene {
         // spawn pipes
     
         let spawn = SKAction.runBlock({() in self.spawnPipes()})
-        let delay = SKAction.waitForDuration(NSTimeInterval(2.0))
+        let delay = SKAction.waitForDuration(NSTimeInterval(1.5))
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         let spawnThenDelayForever = SKAction.repeatActionForever(spawnThenDelay)
         
@@ -109,24 +116,26 @@ class GameScene: SKScene {
         pipePair.position = CGPointMake(self.frame.size.width + pipeUpTexture.size().width, 0)
         pipePair.zPosition = -5
         
-        let height = UInt32(self.frame.size.height / 4)
-        //let y = arc4random() % height + height
+        
+        let pipeUp = SKSpriteNode(texture: pipeUpTexture)
+        pipeUp.setScale(2)
+        let height = UInt32(pipeUp.size.height / 2)
+        let y = arc4random() % height + height
+        pipeUp.position = CGPointMake(0.0, CGFloat(y))
+        
+        pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
+        pipeUp.physicsBody?.dynamic = false
+        pipePair.addChild(pipeUp)
+        
         
         let pipeDown = SKSpriteNode(texture: pipeDownTexture)
-        pipeDown.setScale(1)
-        pipeDown.position = CGPointMake(0.0, self.frame.size.height / 1.1)
+        pipeDown.setScale(2)
+        pipeDown.position = CGPointMake(0.0, CGFloat(y) + CGFloat(pipeDown.size.height) + pipeGap)
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
         pipeDown.physicsBody?.dynamic = false
         pipePair.addChild(pipeDown)
         
-        let pipeUp = SKSpriteNode(texture: pipeUpTexture)
-        pipeUp.setScale(1)
-        pipeUp.position = CGPointMake(0.0, CGFloat(pipeGap) + pipeUp.size.height)
-        
-        pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
-        pipeUp.physicsBody?.dynamic = false
-        pipePair.addChild(pipeUp)
         
         pipePair.runAction(PipeMoveAndRemove)
         self.addChild(pipePair)
@@ -139,9 +148,42 @@ class GameScene: SKScene {
         
         for touch in touches {
             let location = touch.locationInNode(self)
+            let node = nodeAtPoint(location)
+            
+            if node.name == "pause" {
+                // pause game and and blur filter
+                self.paused = true
+                let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+                let blurEffectView = UIVisualEffectView(effect: blurEffect)
+                blurEffectView.frame = (self.scene?.view?.bounds)!
+                blurEffectView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight] // for supporting device rotation
+                self.scene?.view?.addSubview(blurEffectView)
+                
+                
+                // add doge to pause view
+                let doge = UIImage(named: "doge_original")
+                let pauseDoge = UIImageView(image: doge)
+                let x = self.view!.bounds.width / 2 - doge!.size.width / 4
+                let y = self.view!.bounds.height / 2 - doge!.size.height / 4
+                pauseDoge.frame = CGRectMake(x, y - self.view!.bounds.height / 10, doge!.size.width / 2, doge!.size.height / 2)
+                pauseDoge.contentMode = UIViewContentMode.ScaleAspectFit
+                
+                
+                self.view?.addSubview(pauseDoge)
+                //pauseView.f
+                /*
+                let pauseView = SKView(frame: (self.scene?.view?.bounds)!)
+                self.scene?.view?.addSubview(pauseView)
+                let pauseScene = SKScene(size: blurEffectView.frame.size)
+                pauseScene.addChild(doge)
+                pauseView.presentScene(pauseScene)
+ */
+                //self.scene?.view?.willRemoveSubview(blurEffectView)
+                
+            }
             
             bird.physicsBody?.velocity = CGVectorMake(0,0)
-            bird.physicsBody?.applyImpulse(CGVectorMake(0, 50))
+            bird.physicsBody?.applyImpulse(CGVectorMake(0, 55))
         }
     }
    
